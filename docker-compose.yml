@@ -4,7 +4,7 @@ services:
   #   image: ghcr.io/w-disaster/ember:master
   #   container_name: ember-feature-extraction-pipeline
   #   environment:
-  #     MALWARE_DIR_PATH: /usr/input_data/malware/
+  #     MALWARE_DIR_PATH: /usr/input_data/malware/malware_ember_features.csv
   #     FINAL_DATASET_DIR: /usr/app/dataset/
   #     N_PROCESSES: 32
   #   volumes:
@@ -15,7 +15,7 @@ services:
   #   image: prova
   #   container_name: ember-train-test-split
   #   environment:
-  #     RAW_DATASET_PATH: "/usr/app/raw_dataset/"
+  #     RAW_DATASET_PATH: "/usr/app/raw_dataset/malware_em"
   #     BASE_OUTPUT_PATH: "/usr/app/splitted_dataset/"
   #   volumes:
   #     - "./raw_dataset/:/usr/app/raw_dataset/"

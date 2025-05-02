@@ -5,4 +5,4 @@ WORKDIR /usr/app
 COPY . .
 RUN pip install -r requirements.txt
 
-CMD [ "python3", "-m", "split_scripts.ember_splits" ] 
+CMD [ "python3", "-m", "split_scripts.norton_splits" ] 
