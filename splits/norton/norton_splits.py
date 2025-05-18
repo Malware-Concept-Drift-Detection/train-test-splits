@@ -10,7 +10,7 @@ def train_test_split():
     truncated_theshold = 7
     malware_dataset = MalwareDataset(
         split=pd.Timestamp("2021-09-03 13:47:49"),
-        truncated_fam_path="./split_scripts/norton/truncated_samples_per_family.csv",
+        truncated_fam_path="./splits/norton/truncated_samples_per_family.csv",
         truncated_threshold=truncated_theshold,
     )
 
