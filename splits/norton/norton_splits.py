@@ -4,14 +4,14 @@ from splits.norton.dataset.malware_dataset import MalwareDataset
 import os
 import sklearn.model_selection as ms
 
-def train_test_split():
 
+def train_test_split():
     # Open data with time-based split and filter dataset with truncated families
     truncated_theshold = 7
     malware_dataset = MalwareDataset(
         split=pd.Timestamp("2021-09-03 13:47:49"),
         truncated_fam_path="./split_scripts/norton/truncated_samples_per_family.csv",
-        truncated_threshold=truncated_theshold
+        truncated_threshold=truncated_theshold,
     )
 
     # Load the dataset
@@ -31,13 +31,11 @@ def train_test_split():
         X = X.loc[malware_dataset.df_malware_family_fsd["sha256"]]
         y = y.loc[malware_dataset.df_malware_family_fsd["sha256"]]
 
-      
-    else: 
+    else:
         X = malware_dataset.df_malware_family_fsd.copy()
         X.set_index("sha256", inplace=True)
         y = X["family"]
         X = X.drop("family", axis=1)
-
 
     # Perform time-based split
     X_train, X_test = (
@@ -54,7 +52,9 @@ def train_test_split():
     print(f"Test set percentage: {test_p:.2%}")
 
     pe_dataset_type = os.getenv("PE_DATASET_TYPE")
-    output_path = os.path.join(os.getenv("BASE_OUTPUT_PATH"), pe_dataset_type, "time_split")
+    output_path = os.path.join(
+        os.getenv("BASE_OUTPUT_PATH"), pe_dataset_type, "time_split"
+    )
     os.makedirs(output_path, exist_ok=True)
 
     print("Saving time-based train/test split")
@@ -65,9 +65,13 @@ def train_test_split():
 
     # Perform random split
     rnd_seed = 42
-    X_train, X_test, y_train, y_test = ms.train_test_split(X, y, test_size=test_p, random_state=rnd_seed)
+    X_train, X_test, y_train, y_test = ms.train_test_split(
+        X, y, test_size=test_p, random_state=rnd_seed
+    )
 
-    output_path = os.path.join(os.getenv("BASE_OUTPUT_PATH"), pe_dataset_type, "random_split")
+    output_path = os.path.join(
+        os.getenv("BASE_OUTPUT_PATH"), pe_dataset_type, "random_split"
+    )
     os.makedirs(output_path, exist_ok=True)
 
     print("Saving random train/test split")

@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 from splits.motif.motif_dataset import MotifDataset
 from splits.motif.utils.best_split_utils import print_statistics_from_train_test
 
+
 def train_test_split():
     # Load the dataset
     ember_dataset_path = os.getenv("RAW_DATASET_PATH")
@@ -39,7 +40,9 @@ def train_test_split():
     print_statistics_from_train_test(X_train, X_test)
 
     pe_dataset_type = os.getenv("PE_DATASET_TYPE")
-    output_path = os.path.join(os.getenv("BASE_OUTPUT_PATH"), pe_dataset_type, "time_split")
+    output_path = os.path.join(
+        os.getenv("BASE_OUTPUT_PATH"), pe_dataset_type, "time_split"
+    )
     os.makedirs(output_path, exist_ok=True)
 
     X_train.to_csv(os.path.join(output_path, "X_train.csv"), index=True, header=True)
@@ -51,9 +54,13 @@ def train_test_split():
     test_p = y_test.shape[0] / (y_train.shape[0] + y_test.shape[0])
 
     rnd_seed = 42
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_p, random_state=rnd_seed)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=test_p, random_state=rnd_seed
+    )
 
-    output_path = os.path.join(os.getenv("BASE_OUTPUT_PATH"), pe_dataset_type, "random_split")
+    output_path = os.path.join(
+        os.getenv("BASE_OUTPUT_PATH"), pe_dataset_type, "random_split"
+    )
     os.makedirs(output_path, exist_ok=True)
 
     X_train.to_csv(os.path.join(output_path, "X_train.csv"), index=True, header=True)
