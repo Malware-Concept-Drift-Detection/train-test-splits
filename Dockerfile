@@ -4,5 +4,9 @@ WORKDIR /usr/app
 
 COPY . .
 
-RUN pip install -r requirements.txt
-CMD [ "python3", "-m", "split_scripts.split_dataset" ] 
+RUN curl -sSL https://install.python-poetry.org | python3 - && \
+    ln -s /root/.local/bin/poetry /usr/local/bin/poetry
+
+RUN poetry install
+
+CMD [ "poetry", "run", "python3", "-m", "splits.split_dataset" ] 
