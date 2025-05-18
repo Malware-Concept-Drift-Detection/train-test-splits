@@ -1,0 +1,42 @@
+name: CI/CD
+on:
+  push:
+    branches-ignore:
+      - 'dependabot/**'
+    paths-ignore:
+      - '.gitignore'
+      - '.mergify.yml'
+      - 'CHANGELOG.md'
+      - 'LICENSE'
+      - 'README.md'
+      - 'renovate.json'
+  pull_request:
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    name: Preliminary Checks
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # all history
+
+      - name: Install Poetry
+        run: pip install -r requirements.txt
+
+      - name: Restore Development Environment
+        run: poetry install
+
+      - name: Check code is syntactically correct
+        shell: bash
+        run: poe compile
+
+      - name: Format Check
+        shell: bash
+        run: poe format-check
+
+  deploy:
+     name: Deploy
+     uses: ./.github/workflows/deploy.yml
+     secrets: inherit
