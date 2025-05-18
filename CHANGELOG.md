@@ -1,3 +1,13 @@
+## [1.0.1](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/compare/1.0.0...1.0.1) (2025-05-18)
+
+### Bug Fixes
+
+* trunc family csv path ([a87ff32](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/commit/a87ff3225f9e3ea22e2085a52823eda0026d3654))
+
+### General maintenance
+
+* format code, add ruff dep ([d99e952](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/commit/d99e9523b0629be96e6235b1adcd9464c32afc79))
+
 ## 1.0.0 (2025-05-18)
 
 ### Features
