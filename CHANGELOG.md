@@ -1,3 +1,18 @@
+## [1.1.0](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/compare/1.0.1...1.1.0) (2025-05-28)
+
+### Features
+
+* best time split generalized for TheFinalDataset directory structure ([41332d7](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/commit/41332d71540d920b9a644c7125f446ffb586d7bd))
+* extend time-based split to TheFinalDataset directory format ([d3e5ec5](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/commit/d3e5ec5736973e646e44766aae225c319aff4e4e))
+
+### Dependency updates
+
+* **deps:** add matplotlib ([03acff8](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/commit/03acff83d21cd905625d54560436d7f57f9a9087))
+
+### Refactoring
+
+* move norton best time-based split to a common package ([aefd053](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/commit/aefd053bcab632476453276162968303cd4d3c9e))
+
 ## [1.0.1](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/compare/1.0.0...1.0.1) (2025-05-18)
 
 ### Bug Fixes
