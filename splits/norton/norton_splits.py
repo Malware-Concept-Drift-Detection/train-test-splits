@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn.feature_selection import VarianceThreshold
-from splits.norton.dataset.malware_dataset import MalwareDataset
+from splits.best_time_split.malware_dataset import MalwareDataset
 import os
 import sklearn.model_selection as ms
 import logging
