@@ -14,7 +14,6 @@ class FeatureExtractionConfig:
 
     malware_directory_path: str
     vt_reports_path: str
-    merge_dataset_path: str
     experiment_directory: str
     experiment_subdirectories: List[str]
     final_dataset_directory: str
@@ -22,7 +21,6 @@ class FeatureExtractionConfig:
     opcodes_max_size: int
     temp_results_dir: str
     results_directory: str
-    n_processes: int
 
 
 class ConfigFactory:
@@ -35,7 +33,7 @@ class ConfigFactory:
         return FeatureExtractionConfig(
             malware_directory_path="/home/luca/WD/NortonDataset670/MALWARE/",
             vt_reports_path="/home/luca/WD/NortonDataset670/dataset_info/vt_reports67k.jsons",
-            merge_dataset_path=f"{os.path.dirname(os.path.abspath(__file__))}/../../vt_reports/merge.csv",
+            # merge_dataset_path=f"{os.path.dirname(os.path.abspath(__file__))}/../../vt_reports/merge.csv",
             experiment_directory="experiment",
             experiment_subdirectories=["dataset", "top_features", "results"],
             final_dataset_directory="dataset",
@@ -53,10 +51,9 @@ class ConfigFactory:
         :return: FeatureExtractionConfig
         """
 
-        return FeatureExtractionConfig(
+        c = FeatureExtractionConfig(
             malware_directory_path=os.environ.get("MALWARE_DIR_PATH"),
-            vt_reports_path=os.environ.get("VT_REPORTS_PATH"),
-            merge_dataset_path=os.environ.get("MERGE_DATASET_PATH"),
+            vt_reports_path=os.environ.get("VTREPORTS_PATH"),
             experiment_directory="experiment",
             experiment_subdirectories=["dataset", "top_features", "results"],
             final_dataset_directory=os.environ.get("FINAL_DATASET_DIR"),
@@ -64,9 +61,10 @@ class ConfigFactory:
             opcodes_max_size=3,
             temp_results_dir=".temp",
             results_directory="results",
-            n_processes=int(os.environ.get("N_PROCESSES")),
         )
+        print(c, flush=True)
+        return c
 
 
 # Singleton
-config = ConfigFactory().standard_feature_extraction_config()
+config = ConfigFactory().feature_extraction_config()

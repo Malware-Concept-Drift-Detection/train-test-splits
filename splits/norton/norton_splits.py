@@ -3,16 +3,17 @@ from sklearn.feature_selection import VarianceThreshold
 from splits.norton.dataset.malware_dataset import MalwareDataset
 import os
 import sklearn.model_selection as ms
+import logging
+
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 
 def train_test_split():
     # Open data with time-based split and filter dataset with truncated families
     truncated_theshold = 7
-    malware_dataset = MalwareDataset(
-        split=pd.Timestamp("2021-09-03 13:47:49"),
-        truncated_fam_path="./splits/norton/truncated_samples_per_family.csv",
-        truncated_threshold=truncated_theshold,
-    )
+    malware_dataset = MalwareDataset()
 
     # Load the dataset
     dataset_env_name = "RAW_DATASET_PATH"
