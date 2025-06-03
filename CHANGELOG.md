@@ -1,3 +1,9 @@
+## [1.1.1](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/compare/1.1.0...1.1.1) (2025-06-03)
+
+### Bug Fixes
+
+* bisection method ([752528f](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/commit/752528f81d9e3390ed9b1e72e836f1b8905403dc))
+
 ## [1.1.0](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/compare/1.0.1...1.1.0) (2025-05-28)
 
 ### Features
