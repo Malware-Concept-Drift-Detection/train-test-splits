@@ -14,22 +14,26 @@ fsd = "first_submission_date"
 
 def find_balanced_split(df, timestamps, training_perc):
     low, high = 0, len(timestamps) - 1
-    idx = -1
+    best_idx = None
+    best_diff = float("inf")
+
     while low <= high:
         mid = (low + high) // 2
         mid_value = timestamps[mid]
         perc_train = len(df[df[fsd] < mid_value]) / len(df)
-        if perc_train == training_perc:
-            idx = mid
-            high = mid - 1
-        elif perc_train < training_perc:
-            # Search in the right half
+
+        # Track the closest match
+        diff = abs(perc_train - training_perc)
+        if diff < best_diff:
+            best_diff = diff
+            best_idx = mid
+
+        if perc_train < training_perc:
             low = mid + 1
         else:
-            # Search in the left half
             high = mid - 1
 
-    return timestamps[idx]
+    return timestamps[best_idx] if best_idx is not None else None
 
 
 def train_test_split_by_date(df: pd.DataFrame, date_split: pd.Timestamp):
@@ -143,19 +147,24 @@ def compute_best_time_split(df: pd.DataFrame):
     #     )
     #     perc_app_families.append(af)
     #     balance_scores.append(bs)
-
     # Min-Max normalization
-    perc_app_families_min_max = (perc_app_families - np.min(perc_app_families)) / (
-        np.max(perc_app_families) - np.min(perc_app_families)
-    )
-    balance_scores_min_max = (balance_scores - np.min(balance_scores)) / (
-        np.max(balance_scores) - np.min(balance_scores)
-    )
+    if (np.max(perc_app_families) - np.min(perc_app_families)) == 0:
+        perc_app_families_min_max = np.zeros_like(perc_app_families)
+    else:
+        perc_app_families_min_max = (perc_app_families - np.min(perc_app_families)) / (
+            np.max(perc_app_families) - np.min(perc_app_families)
+        )
+    if (np.max(balance_scores) - np.min(balance_scores)) == 0:
+        balance_scores_min_max = np.zeros_like(balance_scores)
+    else:
+        balance_scores_min_max = (balance_scores - np.min(balance_scores)) / (
+            np.max(balance_scores) - np.min(balance_scores)
+        )
     # Objective function: maximize the percentage of appearing families in the test set + balance score
     f_objective = [
         af + bs for (af, bs) in zip(perc_app_families_min_max, balance_scores_min_max)
     ]
-    x = list(range(len(t_unique)))  # X-axis
+    x = list(range(len(t_unique)))
 
     plt.plot(x, perc_app_families_min_max, label="Percentage of Appearing Families")
     plt.plot(x, balance_scores_min_max, label="Balance Score")
