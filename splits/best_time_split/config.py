@@ -51,7 +51,7 @@ class ConfigFactory:
         :return: FeatureExtractionConfig
         """
 
-        c = FeatureExtractionConfig(
+        return FeatureExtractionConfig(
             malware_directory_path=os.environ.get("MALWARE_DIR_PATH"),
             vt_reports_path=os.environ.get("VTREPORTS_PATH"),
             experiment_directory="experiment",
@@ -62,8 +62,6 @@ class ConfigFactory:
             temp_results_dir=".temp",
             results_directory="results",
         )
-        print(c, flush=True)
-        return c
 
 
 # Singleton
