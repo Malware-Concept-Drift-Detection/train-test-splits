@@ -1,3 +1,18 @@
+## [1.1.2](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/compare/1.1.1...1.1.2) (2025-07-29)
+
+### Bug Fixes
+
+* remove tesseract import ([847b3fe](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/commit/847b3fe6cd664e53a18de2e2ef6a79e953ad3ede))
+
+### General maintenance
+
+* remove print in config ([0f0a21a](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/commit/0f0a21a24b56f30055a1e802551304fc2d305068))
+* update script ([e653a32](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/commit/e653a32286836a30baecdcc244a702dc4ae59a43))
+
+### Refactoring
+
+* unique package for all splits ([1da26f4](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/commit/1da26f40f4400733de534b50a37093ec2b6a90fc))
+
 ## [1.1.1](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/compare/1.1.0...1.1.1) (2025-06-03)
 
 ### Bug Fixes
