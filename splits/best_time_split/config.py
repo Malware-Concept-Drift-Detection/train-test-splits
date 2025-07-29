@@ -56,7 +56,7 @@ class ConfigFactory:
             vt_reports_path=os.environ.get("VTREPORTS_PATH"),
             experiment_directory="experiment",
             experiment_subdirectories=["dataset", "top_features", "results"],
-            final_dataset_directory=os.environ.get("FINAL_DATASET_DIR"),
+            final_dataset_directory=os.environ.get("BASE_OUTPUT_PATH"),
             top_features_directory="top_features",
             opcodes_max_size=3,
             temp_results_dir=".temp",
