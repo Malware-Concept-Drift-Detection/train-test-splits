@@ -1,3 +1,9 @@
+## [1.2.1](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/compare/1.2.0...1.2.1) (2025-08-04)
+
+### Bug Fixes
+
+* families removal when filtering duplicates ([363c528](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/commit/363c5285b62ca9e4a1cfebfb86b870d5836c8050))
+
 ## [1.2.0](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/compare/1.1.2...1.2.0) (2025-08-04)
 
 ### Features
