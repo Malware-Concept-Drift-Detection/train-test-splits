@@ -1,3 +1,13 @@
+## [1.2.0](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/compare/1.1.2...1.2.0) (2025-08-04)
+
+### Features
+
+* split using only non-duplicated samples ([c7c0589](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/commit/c7c05892e520636033cead2fcbc476c99a83a8b1))
+
+### General maintenance
+
+* update script to run extraction of TheFinalDataset and Norton670 ([33ad579](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/commit/33ad57908a0a30fb67d719a66fa94efb82326de6))
+
 ## [1.1.2](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/compare/1.1.1...1.1.2) (2025-07-29)
 
 ### Bug Fixes
