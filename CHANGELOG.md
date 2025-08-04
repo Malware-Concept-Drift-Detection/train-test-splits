@@ -1,3 +1,9 @@
+## [1.2.2](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/compare/1.2.1...1.2.2) (2025-08-04)
+
+### Bug Fixes
+
+* output filenames ([a5b80e6](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/commit/a5b80e6b347c81b99671b5a5d5bf4533b4dd4f1a))
+
 ## [1.2.1](https://github.com/Malware-Concept-Drift-Detection/train-test-splits/compare/1.2.0...1.2.1) (2025-08-04)
 
 ### Bug Fixes
