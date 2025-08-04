@@ -30,7 +30,7 @@ for i in "${!PE_DATASETS_PATHS[@]}"; do
 
       ENV_VARS=(
         -e BASE_OUTPUT_PATH="/usr/app/splitted_dataset/"
-        -e PE_DATASET_TYPE="$PE_DATASET_TYPE"
+        -e PE_DATASET_TYPE="$PE_DATASET_TYPE_F"
         -e MALWARE_DIR_PATH="/usr/app/malware_dir/"
         -e VTREPORTS_PATH="/usr/app/vt_reports/"
         -e NONDUPL_SHA256_FILENAME="/usr/app/duplicated_pe_malware/$NONDUPL_FILENAME"

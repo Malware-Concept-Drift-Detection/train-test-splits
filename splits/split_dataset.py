@@ -65,10 +65,10 @@ def train_test_split(filter_dupl: bool = False):
     os.makedirs(output_path, exist_ok=True)
 
     logging.info("Saving time-based train/test split...")
-    X_train.to_csv(os.path.join(output_path, "X_train.csv"), index=True, header=True)
-    X_test.to_csv(os.path.join(output_path, "X_test.csv"), index=True, header=True)
-    y_train.to_csv(os.path.join(output_path, "y_train.csv"), index=True, header=True)
-    y_test.to_csv(os.path.join(output_path, "y_test.csv"), index=True, header=True)
+    save_data(os.path.join(output_path, "X_train.pkl"), X_train)
+    save_data(os.path.join(output_path, "X_test.pkl"), X_test)
+    save_data(os.path.join(output_path, "y_train.pkl"), y_train)
+    save_data(os.path.join(output_path, "y_test.pkl"), y_test)
     logging.info("Done")
 
     # Perform random split
@@ -86,11 +86,16 @@ def train_test_split(filter_dupl: bool = False):
     os.makedirs(output_path, exist_ok=True)
 
     logging.info("Saving random train/test split...")
-    X_train.to_csv(os.path.join(output_path, "X_train.csv"), index=True, header=True)
-    X_test.to_csv(os.path.join(output_path, "X_test.csv"), index=True, header=True)
-    y_train.to_csv(os.path.join(output_path, "y_train.csv"), index=True, header=True)
-    y_test.to_csv(os.path.join(output_path, "y_test.csv"), index=True, header=True)
+    save_data(os.path.join(output_path, "X_train.pkl"), X_train)
+    save_data(os.path.join(output_path, "X_test.pkl"), X_test)
+    save_data(os.path.join(output_path, "y_train.pkl"), y_train)
+    save_data(os.path.join(output_path, "y_test.pkl"), y_test)
     logging.info("Done")
+
+
+def save_data(data_path: str, obj: object):
+    with open(data_path, "wb") as f:
+        pickle.dump(obj, f)
 
 
 if __name__ == "__main__":
