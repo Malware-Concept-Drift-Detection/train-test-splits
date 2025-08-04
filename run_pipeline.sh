@@ -1,62 +1,57 @@
 #!/bin/bash
 
-# Extract EMBER features from the Norton dataset
-PE_DATASETS_PATH=("/home/luca/MNTPOINT/SAMPLES/malpe/")
-PE_DATASET_TYPES=("Norton670") #"MOTIF")
+PE_DATASETS_PATHS=("/home/luca/MNTPOINT/SAMPLES/chunk/" "/home/luca/MNTPOINT/SAMPLES/malpe/")
+VTREPORTS_PATHS=("/home/luca/MNTPOINT/VTREPORTS/chunk/" "/home/luca/MNTPOINT/VTREPORTS/malpe/")
 
-RAW_DATASETS_BASE_PATH="$(pwd)/raw_dataset/"
-DATASET_FILENAMES=("norton670_pe_ember_features.csv") #"norton670_pe_ember_features.csv") #"motif_pe_ember_features.csv")
+PE_DATASET_TYPES=("TheFinalDataset" "Norton670")
+
+RAW_DATASETS_BASE_PATH="/home/luca/Malware-Concept-Drift-Detection/ember/dataset/"
+DATASET_FILENAMES=("thefinaldataset_ember_features.pkl"  "norton670_pe_ember_features.pkl")
+
+NONDUPL_FILENAMES=("thefinaldataset_sha256_nondupl.pkl" "norton670_sha256_nondupl.pkl")
 
 SPLITTED_DATASET_PATH="$(pwd)/splitted_dataset/"
-# Perform train/test split
-# docker build -t train-test-split .
+DUPL_PATH="/home/luca/Malware-Concept-Drift-Detection/duplicated-pe-malware/"
 
-# Detect Concept Drift using Conformal Evaluation (EMBER features + time-based split only)
-CD_RESULTS_PATH="$(pwd)/results/"
+DATASET_TYPE_SUFFIXES=("_post" "_pre")
 
-for i in "${!PE_DATASETS_PATH[@]}"; do
+for i in "${!PE_DATASETS_PATHS[@]}"; do
 
-  PE_DATASET_PATH="${PE_DATASETS_PATH[$i]}"
-  
-  # docker run \
-  #   --name ember-feature-extraction-pipeline \
-  #   -e MALWARE_DIR_PATH="/usr/input_data/malware/" \
-  #   -e FINAL_DATASET_FILENAME="/usr/app/dataset/${DATASET_FILENAMES[$i]}" \
-  #   -e N_PROCESSES=32 \
-  #   -v $PE_DATASET_PATH:/usr/input_data/malware/ \
-  #   -v $RAW_DATASETS_BASE_PATH:/usr/app/dataset/ \
-  #   ghcr.io/malware-concept-drift-detection/ember-features-extraction:master
+    DATASET_FILENAME="${DATASET_FILENAMES[$i]}"
+    PE_DATASET_TYPE="${PE_DATASET_TYPES[$i]}"
+    PE_DATASET_PATH="${PE_DATASETS_PATHS[$i]}"
+    VTREPORTS_PATH="${VTREPORTS_PATHS[$i]}"
+    NONDUPL_FILENAME="${NONDUPL_FILENAMES[$i]}"
 
-  # Perform train/test split
-  #-e RAW_DATASET_PATH="/usr/app/raw_dataset/${DATASET_FILENAMES[$i]}" \
+    echo "Splitting dataset: $PE_DATASET_TYPE (post + pre feature selection)"
 
-  docker run \
-    --name train-test-split-${PE_DATASET_TYPES[$i]} \
-    -e BASE_OUTPUT_PATH="/usr/app/splitted_dataset/" \
-    -e PE_DATASET_TYPE="${PE_DATASET_TYPES[$i]}" \
-    -e MALWARE_DIR_PATH="/usr/app/malware_dir/" \
-    -e VTREPORTS_PATH="/usr/app/vt_reports/" \
-    -v $RAW_DATASETS_BASE_PATH:/usr/app/raw_dataset/ \
-    -v $SPLITTED_DATASET_PATH:/usr/app/splitted_dataset/ \
-    -v /home/luca/MNTPOINT/SAMPLES/malpe/:/usr/app/malware_dir/ \
-    -v /home/luca/MNTPOINT/VTREPORTS/malpe/:/usr/app/vt_reports/ \
-    -v $(pwd)/splits/:/usr/app/splits/ \
-    train-test-split
+    for SUFFIX in "${DATASET_TYPE_SUFFIXES[@]}"; do
+      PE_DATASET_TYPE_F="${PE_DATASET_TYPE}${SUFFIX}"
 
-  docker rm train-test-split-${PE_DATASET_TYPES[$i]}
+      ENV_VARS=(
+        -e BASE_OUTPUT_PATH="/usr/app/splitted_dataset/"
+        -e PE_DATASET_TYPE="$PE_DATASET_TYPE"
+        -e MALWARE_DIR_PATH="/usr/app/malware_dir/"
+        -e VTREPORTS_PATH="/usr/app/vt_reports/"
+        -e NONDUPL_SHA256_FILENAME="/usr/app/duplicated_pe_malware/$NONDUPL_FILENAME"
+      )
 
-  # docker run \
-  #   --name transcendent \
-  #   -e BASE_DATASET_PATH=/usr/app/dataset/ \
-  #   -e PE_DATASET_TYPE=ember \
-  #   -e TRAIN_TEST_SPLIT_TYPE=time_split \
-  #   -v $CD_RESULTS_PATH:/usr/app/models/ \
-  #   -v $SPLITTED_DATASET_PATH:/usr/app/dataset/ \
-  #   ghcr.io/malware-concept-drift-detection/transcendent-multiclass:main
+      if [[ "$SUFFIX" == "_post" ]]; then
+        ENV_VARS+=(-e RAW_DATASET_PATH="/usr/app/raw_dataset/$DATASET_FILENAME")
+      fi
+
+      docker run \
+        --name train-test-split-$PE_DATASET_TYPE_F \
+        "${ENV_VARS[@]}" \
+        -v $RAW_DATASETS_BASE_PATH:/usr/app/raw_dataset/ \
+        -v $SPLITTED_DATASET_PATH:/usr/app/splitted_dataset/ \
+        -v $DUPL_PATH:/usr/app/duplicated_pe_malware/ \
+        -v $PE_DATASET_PATH:/usr/app/malware_dir/ \
+        -v $VTREPORTS_PATH:/usr/app/vt_reports/ \
+        -v "$(pwd)"/splits/:/usr/app/splits/ \
+        train-test-split
+
+      docker rm train-test-split-$PE_DATASET_TYPE_F
+    done
 
 done
-
-
-
-
-
