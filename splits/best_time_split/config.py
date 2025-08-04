@@ -13,6 +13,7 @@ class FeatureExtractionConfig:
     """
 
     malware_directory_path: str
+    dataset_type: str
     vt_reports_path: str
     experiment_directory: str
     experiment_subdirectories: List[str]
@@ -21,29 +22,10 @@ class FeatureExtractionConfig:
     opcodes_max_size: int
     temp_results_dir: str
     results_directory: str
+    non_duplicated_sha256s_path: str
 
 
 class ConfigFactory:
-    @staticmethod
-    def standard_feature_extraction_config() -> FeatureExtractionConfig:
-        """
-        Return a standard FeatureExtractionConfig
-        :return: FeatureExtractionConfig
-        """
-        return FeatureExtractionConfig(
-            malware_directory_path="/home/luca/WD/NortonDataset670/MALWARE/",
-            vt_reports_path="/home/luca/WD/NortonDataset670/dataset_info/vt_reports67k.jsons",
-            # merge_dataset_path=f"{os.path.dirname(os.path.abspath(__file__))}/../../vt_reports/merge.csv",
-            experiment_directory="experiment",
-            experiment_subdirectories=["dataset", "top_features", "results"],
-            final_dataset_directory="dataset",
-            top_features_directory="top_features",
-            opcodes_max_size=3,
-            temp_results_dir=".temp",
-            results_directory="results",
-            n_processes=32,
-        )
-
     @staticmethod
     def feature_extraction_config() -> FeatureExtractionConfig:
         """
@@ -54,6 +36,7 @@ class ConfigFactory:
         return FeatureExtractionConfig(
             malware_directory_path=os.environ.get("MALWARE_DIR_PATH"),
             vt_reports_path=os.environ.get("VTREPORTS_PATH"),
+            dataset_type=os.environ.get("PE_DATASET_TYPE"),
             experiment_directory="experiment",
             experiment_subdirectories=["dataset", "top_features", "results"],
             final_dataset_directory=os.environ.get("BASE_OUTPUT_PATH"),
@@ -61,6 +44,7 @@ class ConfigFactory:
             opcodes_max_size=3,
             temp_results_dir=".temp",
             results_directory="results",
+            non_duplicated_sha256s_path=os.environ.get("NONDUPL_SHA256_FILENAME"),
         )
 
 

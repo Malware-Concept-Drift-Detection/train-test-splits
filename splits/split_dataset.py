@@ -5,25 +5,25 @@ from splits.best_time_split.malware_dataset import MalwareDataset
 import os
 import sklearn.model_selection as ms
 import logging
+import pickle
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
 
-def train_test_split():
-    # Open data with time-based split and filter dataset with truncated families
-    truncated_theshold = 7
-    malware_dataset = MalwareDataset()
+def train_test_split(filter_dupl: bool = False):
+    malware_dataset = MalwareDataset(filter_dupl=filter_dupl)
 
     # Load the dataset
     dataset_env_name = "RAW_DATASET_PATH"
     if dataset_env_name in os.environ:
         ember_dataset_path = os.getenv(dataset_env_name)
-        import pickle
 
         with open(ember_dataset_path, "rb") as f:
             X = pickle.load(f)
+        logging.info(f"SHAPE {X.shape}")
+
         # X = pd.read_csv(ember_dataset_path, header=0, index_col=0)
 
         y = X["family"]
@@ -34,7 +34,6 @@ def train_test_split():
         sel.fit(X)
         X = X.loc[:, sel.get_support()]
 
-        print("SHAPE1", malware_dataset.df_malware_family_fsd.shape)
         X = X.loc[malware_dataset.df_malware_family_fsd["sha256"]]
         y = y.loc[malware_dataset.df_malware_family_fsd["sha256"]]
 
@@ -56,19 +55,21 @@ def train_test_split():
     )
 
     test_p = y_test.shape[0] / (y_train.shape[0] + y_test.shape[0])
-    print(f"Test set percentage: {test_p:.2%}")
+    logging.info(f"Test set percentage: {test_p:.2%}")
 
     pe_dataset_type = os.getenv("PE_DATASET_TYPE")
+    dupl_dataset_type = "dupl" if filter_dupl else "nondupl"
     output_path = os.path.join(
-        os.getenv("BASE_OUTPUT_PATH"), pe_dataset_type, "time_split"
+        os.getenv("BASE_OUTPUT_PATH"), pe_dataset_type, dupl_dataset_type, "time_split"
     )
     os.makedirs(output_path, exist_ok=True)
 
-    print("Saving time-based train/test split")
+    logging.info("Saving time-based train/test split...")
     X_train.to_csv(os.path.join(output_path, "X_train.csv"), index=True, header=True)
     X_test.to_csv(os.path.join(output_path, "X_test.csv"), index=True, header=True)
     y_train.to_csv(os.path.join(output_path, "y_train.csv"), index=True, header=True)
     y_test.to_csv(os.path.join(output_path, "y_test.csv"), index=True, header=True)
+    logging.info("Done")
 
     # Perform random split
     rnd_seed = 42
@@ -77,16 +78,21 @@ def train_test_split():
     )
 
     output_path = os.path.join(
-        os.getenv("BASE_OUTPUT_PATH"), pe_dataset_type, "random_split"
+        os.getenv("BASE_OUTPUT_PATH"),
+        pe_dataset_type,
+        dupl_dataset_type,
+        "random_split",
     )
     os.makedirs(output_path, exist_ok=True)
 
-    print("Saving random train/test split")
+    logging.info("Saving random train/test split...")
     X_train.to_csv(os.path.join(output_path, "X_train.csv"), index=True, header=True)
     X_test.to_csv(os.path.join(output_path, "X_test.csv"), index=True, header=True)
     y_train.to_csv(os.path.join(output_path, "y_train.csv"), index=True, header=True)
     y_test.to_csv(os.path.join(output_path, "y_test.csv"), index=True, header=True)
+    logging.info("Done")
 
 
 if __name__ == "__main__":
-    train_test_split()
+    train_test_split(filter_dupl=False)
+    train_test_split(filter_dupl=True)
